@@ -7,8 +7,8 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        'popi': ['"Poppins"','"sans-serif"'],
-        'robo': ['"Roboto"','"sans-serif"'],
+        'popi': ['"Poppins"', 'sans-serif'],
+        'robo': ['"Roboto"', 'serif'],
       },
     },
   },
