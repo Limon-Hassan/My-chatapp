@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 
-.curvared-shadow{
+.curvared-shadow {
   position: absolute;
   top: -5px;
   right: 0;
@@ -12,4 +12,15 @@
   background-color: black;
   transform: rotate(10deg) skewY(45deg);
   transform-origin: bottom right;
+}
+
+.curvared-shadow2 {
+  position: absolute;
+  top: -5px;
+  right: 0;
+  width: 850px;
+  height: 800px;
+  background-color: black;
+  transform: rotate(261deg) skewY(45deg);
+  transform-origin: bottom left;
 }

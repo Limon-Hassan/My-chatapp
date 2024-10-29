@@ -1,12 +1,24 @@
-import React from 'react'
-import Registation from './Pages/Registation'
+import React from "react";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import Registation from "./Pages/Registation";
+import Login from "./Pages/Login";
 
+const router = createBrowserRouter([
+  {
+    path: "/sign up",
+    element:<Registation/>,
+  },
+  {
+    path: "/",
+    element:<Login/>,
+  },
+]);
 const App = () => {
   return (
     <>
-    <Registation></Registation>
+      <RouterProvider router={router} />
     </>
-  )
-}
+  );
+};
 
-export default App
+export default App;
