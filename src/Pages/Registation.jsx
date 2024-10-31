@@ -33,13 +33,14 @@ const Registation = () => {
         .then((userCredential) => {
           setTimeout(() => {
             setSuccess(false);
-            nevigate('/')
+            nevigate("/sign in");
             const user = userCredential.user;
           }, [2000]);
         })
         .catch((error) => {
           setTimeout(() => {
             setSuccess(false);
+            setEmailError("Email already exist!");
             const errorCode = error.code;
             const errorMessage = error.message;
           }, [2000]);
@@ -96,13 +97,14 @@ const Registation = () => {
                 onChange={(e) => {
                   setEmail(e.target.value);
                   setEmailError("");
+                  setError("");
                 }}
                 className="w-full h-full border-b-2 border-slate-700 outline-none peer py-3 font-popi font-medium text-[18px] pr-8"
                 type="text"
                 value={email}
               />
               {emailerror && (
-                <p className="absolute bottom-[-30] left-[20px] w-[120px] h-[30px] bg-white shadow-[0px_0px_2px_2px_rgba(0,0,0,0.1)] text-slate-800 transition-all ease-in-out duration-300 px-1 py-1">
+                <p className="absolute bottom-[-30px] left-[20px] w-[170px] pl-[20px] h-[30px] bg-white shadow-[0px_0px_2px_2px_rgba(0,0,0,0.1)] text-slate-800 transition-all ease-in-out duration-300 px-1 py-1">
                   {emailerror}
                 </p>
               )}
@@ -117,7 +119,11 @@ const Registation = () => {
               }  relative`}
             >
               <input
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={(e) => {
+                  setPassword(e.target.value);
+                  setEmailError("");
+                  setError("");
+                }}
                 className="w-full h-full border-b-2 border-slate-700 outline-none peer py-3 font-popi font-medium text-[18px] pr-8"
                 type={passShow ? "text" : "password"}
                 value={password}
@@ -171,7 +177,7 @@ const Registation = () => {
           >
             Already Have An Account ?
             <Link
-              to="/"
+              to="/sign in"
               className="text-black font-bold ml-2 hover:underline cursor-pointer"
             >
               Sign in

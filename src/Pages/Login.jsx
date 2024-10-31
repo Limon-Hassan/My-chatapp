@@ -2,8 +2,17 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Aos from "aos";
 import "aos/dist/aos.css";
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  GoogleAuthProvider,
+  signInWithPopup,
+} from "firebase/auth";
+import { ThreeDots } from "react-loader-spinner";
 
 const Login = () => {
+  const auth = getAuth();
+  const provider = new GoogleAuthProvider();
   useEffect(() => {
     Aos.init();
   }, []);
@@ -11,11 +20,47 @@ const Login = () => {
   let [password, setPassword] = useState("");
   let [Error, setError] = useState(false);
   let [passShow, setPassShow] = useState("");
+  let [success, setSuccess] = useState(false);
 
   let handleSubmite = () => {
     if (!username || !password) {
       setError("Please fill out this field");
     }
+    if (username && password) {
+      setSuccess(true);
+      createUserWithEmailAndPassword(auth, username, password)
+        .then((userCredential) => {
+          setTimeout(() => {
+            setSuccess(false);
+            const user = userCredential.user;
+          }, [5000]);
+        })
+        .catch((error) => {
+          setTimeout(() => {
+            setSuccess(false);
+            const errorCode = error.code;
+            const errorMessage = error.message;
+          }, [2000]);
+        });
+    }
+  };
+
+  let handlegoogle = () => {
+    signInWithPopup(auth, provider)
+      .then((result) => {
+      console.log(result)
+        // const credential = GoogleAuthProvider.credentialFromResult(result);
+        // const token = credential.accessToken;
+        // const user = result.user;
+
+      })
+      .catch((error) => {
+        console.log(error)
+        // const errorCode = error.code;
+        // const errorMessage = error.message;
+        // const email = error.customData.email;
+        // const credential = GoogleAuthProvider.credentialFromError(error);
+      });
   };
 
   return (
@@ -107,15 +152,31 @@ const Login = () => {
                 )}
               </div>
             </div>
-            <button
-              data-aos="fade-left"
-              data-aos-duration="2000"
-              data-aos-easing="ease-in-out"
-              onClick={handleSubmite}
-              className="text-[22px] font-robo font-bold text-black bg-gradient-to-t from-black to-white rounded-full px-[120px] py-[12px] ml-[65px] border border-blue-50 hover:bg-gradient-to-t hover:from-white hover:to-black ease-in-out transition-all duration-500 mb-[30px]"
-            >
-              Submit
-            </button>
+            {success == true ? (
+              <div className=" absolute top-[160px] h-[100%] w-[50%] flex justify-center flex-col right-[30px]  text-right pt-0 pb-[100px] ">
+                <ThreeDots
+                  visible={true}
+                  height="80"
+                  width="80"
+                  color="#000000"
+                  radius="9"
+                  ariaLabel="three-dots-loading"
+                  wrapperStyle={{}}
+                  wrapperClass=""
+                />
+              </div>
+            ) : (
+              <button
+                data-aos="fade-left"
+                data-aos-duration="2000"
+                data-aos-easing="ease-in-out"
+                onClick={handleSubmite}
+                className="text-[22px] font-robo font-bold text-black bg-gradient-to-t from-black to-white rounded-full px-[120px] py-[12px] ml-[65px] border border-blue-50 hover:bg-gradient-to-t hover:from-white hover:to-black ease-in-out transition-all duration-500 mb-[30px]"
+              >
+                Submit
+              </button>
+            )}
+
             <p
               data-aos="fade-left"
               data-aos-duration="2500"
@@ -123,7 +184,10 @@ const Login = () => {
               className="text-[16px] font-robo font-normal text-slate-800 mr-[65px] mb-[30px]"
             >
               Sign In With
-              <span className="text-black font-bold ml-2 hover:underline cursor-pointer">
+              <span
+                onClick={handlegoogle}
+                className="text-black font-bold ml-2 hover:underline cursor-pointer"
+              >
                 Google
               </span>
             </p>
